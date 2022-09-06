@@ -40,7 +40,8 @@ export default function SinglePost() {
   };
   const handleUpdate = async () => {
     try {
-      await axios.put(`/posts/${post._id}`, {
+      await axios(`/posts/${post._id}`, {
+        method:"PUT",
         data: { username: user.username, title, desc},
         headers: {
         authorization: getAccessToken(),

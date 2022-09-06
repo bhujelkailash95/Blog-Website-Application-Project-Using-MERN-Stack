@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./register.css";
 
 export default function Register() {
+  
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,16 +12,16 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(false);
+      setError(false);
     try {
-      const res = await axios.post("/auth/register", {
+      const res = await axios.post("/register", {
         username,
         email,
         password,
       });
       res.data && window.location.replace("/login");
     } catch (err) {
-      setError(true);
+     setError(true);
     }
   };
   return (
@@ -32,6 +33,7 @@ export default function Register() {
           type="text"
           className="registerInput"
           placeholder="Enter your username..."
+          required
           onChange={(e) => setUsername(e.target.value)}
         />
         <label>Email</label>
@@ -39,6 +41,8 @@ export default function Register() {
           type="text"
           className="registerInput"
           placeholder="Enter your email..."
+          name="email"
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
         <label>Password</label>
@@ -46,6 +50,8 @@ export default function Register() {
           type="password"
           className="registerInput"
           placeholder="Enter your password..."
+          name="password"
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
         <button className="registerButton" type="submit">

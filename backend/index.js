@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const dotenv = require("dotenv")
 const mongoose = require("mongoose")
 const authRoute = require("./routes/auth")
+const registerAuthRoute = require("./routes/register")
 const userRoute = require("./routes/users")
 const postRoute = require("./routes/posts")
 const categoryRoute = require("./routes/categories")
@@ -36,12 +37,13 @@ const storage = multer.diskStorage({
   app.post("/api/upload", upload.single("file"), (req, res) => {
     res.status(200).json("File has been uploaded");
   });
-
+const port = process.env.PORT || 5000
 app.use("/api/auth", authRoute);
+app.use("/api/register",registerAuthRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
-app.listen("5000", ()=>{
+app.listen(port, ()=>{
     console.log("Backend is running")
 })
