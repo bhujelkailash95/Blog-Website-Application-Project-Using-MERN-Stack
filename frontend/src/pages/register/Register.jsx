@@ -1,29 +1,42 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./register.css";
 
 export default function Register() {
-  
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [data,setData] = useState({
+    username:"",
+    email:"",
+    password:""
+  });
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = ({currentTarget:input}) =>{
+    setData({
+      ...data,[input.name]:input.value
+    })
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      setError(false);
     try {
-      const res = await axios.post("/register", {
-        username,
-        email,
-        password,
-      });
-      res.data && window.location.replace("/login");
-    } catch (err) {
-     setError(true);
+      const url = "/register";
+      const { data:response } = await axios.post(url, data);
+      console.log(response.message);
+      navigate("/login");
+    } catch (error) {
+      if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			)
+        {
+          setError(error.response.data.message);
+        }
     }
   };
+
   return (
     <div className="register">
       <span className="registerTitle">Register</span>
@@ -34,26 +47,31 @@ export default function Register() {
           className="registerInput"
           placeholder="Enter your username..."
           required
-          onChange={(e) => setUsername(e.target.value)}
+          name="username"
+          value={data.username}
+          onChange={handleChange}
         />
         <label>Email</label>
         <input
           type="text"
           className="registerInput"
           placeholder="Enter your email..."
-          name="email"
           required
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          value={data.email}
+          onChange={handleChange}
         />
         <label>Password</label>
         <input
           type="password"
           className="registerInput"
           placeholder="Enter your password..."
-          name="password"
           required
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          value={data.password}
+          onChange={handleChange}
         />
+        {error && <div className='error-msg'>{error}</div>}
         <button className="registerButton" type="submit">
           Register
         </button>
