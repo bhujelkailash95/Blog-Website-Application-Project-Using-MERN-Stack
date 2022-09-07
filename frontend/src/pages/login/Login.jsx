@@ -4,12 +4,31 @@ import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
 import "./login.css";
 
+//Icon Dependencies
+import { Icon } from 'react-icons-kit'
+import {eye} from 'react-icons-kit/feather/eye'
+import {eyeOff} from 'react-icons-kit/feather/eyeOff'
+
 export default function Login() {
   const [data, setData] = useState({ username: "", password: ""});
   const userRef = useRef();
   const passwordRef = useRef();
   const { dispatch, isFetching } = useContext(Context);
   const [error, setError] = useState("");
+  const [type, setType]=useState('password');
+  const [icon, setIcon]=useState(eyeOff);
+
+  const handleToggle=()=>{    
+    if(type==='password'){
+      setIcon(eye);      
+      setType('text');
+    }
+    else{
+      setIcon(eyeOff);     
+      setType('password');
+    }
+  }
+
 
   const handleChange = ({currentTarget: input}) => {
     setData({...data, [input.name]:input.value});
@@ -46,10 +65,9 @@ export default function Login() {
       <span className="loginTitle">Login</span>
       <form className="loginForm" onSubmit={handleSubmit}>
         <label>Username</label>
-        
+        <div className="input-field">
         <input
           type="text"
-          className="loginInput"
           placeholder="Enter your username..."
           ref={userRef}
           name="username"
@@ -57,11 +75,12 @@ export default function Login() {
           onChange={handleChange}
           required
         />
-        
+        </div>
+
         <label>Password</label>
+        <div className="input-field">
         <input
-          type="password"
-          className="loginInput"
+          type={type}
           placeholder="Enter your password..."
           ref={passwordRef}
           name="password"
@@ -69,6 +88,8 @@ export default function Login() {
           onChange={handleChange}
           required
         />
+        <span onClick={handleToggle}><Icon icon={icon} size={25}/></span>
+        </div>
         {error && <div className='error-msg'>{error}</div>}
         <button className="loginButton" type="submit" disabled={isFetching}>
           Login

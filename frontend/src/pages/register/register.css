@@ -47,6 +47,11 @@
     border-radius: 10px;
     text-align: center;
   }
+
+  .registerButton:hover{
+    background-color: #94c33c;
+    color: white;
+  }
   
   .registerLoginButton {
     position: absolute;
