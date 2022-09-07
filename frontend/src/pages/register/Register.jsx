@@ -3,6 +3,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./register.css";
 
+//Icon Dependencies
+import { Icon } from 'react-icons-kit'
+import {eye} from 'react-icons-kit/feather/eye'
+import {eyeOff} from 'react-icons-kit/feather/eyeOff'
+
 export default function Register() {
   const [data,setData] = useState({
     username:"",
@@ -11,6 +16,19 @@ export default function Register() {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [type, setType]=useState('password');
+  const [icon, setIcon]=useState(eyeOff);
+
+  const handleToggle=()=>{    
+    if(type==='password'){
+      setIcon(eye);      
+      setType('text');
+    }
+    else{
+      setIcon(eyeOff);     
+      setType('password');
+    }
+  }
 
   const handleChange = ({currentTarget:input}) =>{
     setData({
@@ -43,6 +61,7 @@ export default function Register() {
       <span className="registerTitle">Register</span>
       <form className="registerForm" onSubmit={handleSubmit}>
         <label>Username</label>
+        <div className="input-field">
         <input
           type="text"
           className="registerInput"
@@ -52,7 +71,9 @@ export default function Register() {
           value={data.username}
           onChange={handleChange}
         />
+        </div>
         <label>Email</label>
+        <div className="input-field">
         <input
           type="text"
           className="registerInput"
@@ -62,7 +83,9 @@ export default function Register() {
           value={data.email}
           onChange={handleChange}
         />
+        </div>
         <label>Password</label>
+        <div className="input-field">
         <input
           type="password"
           className="registerInput"
@@ -72,6 +95,8 @@ export default function Register() {
           value={data.password}
           onChange={handleChange}
         />
+        <span onClick={handleToggle}><Icon icon={icon} size={25}/></span>
+        </div>
         {error && <div className='error-msg'>{error}</div>}
         <button className="registerButton" type="submit">
           Register
