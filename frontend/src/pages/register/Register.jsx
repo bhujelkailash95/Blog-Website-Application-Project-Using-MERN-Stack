@@ -24,6 +24,7 @@ export default function Register() {
       const url = "/register";
       const { data:response } = await axios.post(url, data);
       console.log(response.message);
+      alert("You are successfully registered.")
       navigate("/login");
     } catch (error) {
       if (

@@ -3,8 +3,10 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import { useContext, useState } from "react";
 import { Context } from "../../context/Context";
 import axios from "axios";
+
 export default function Settings() {
   const [file, setFile] = useState(null);
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
@@ -12,12 +14,24 @@ export default function Settings() {
   const { user, dispatch } = useContext(Context);
   const PF = "http://localhost:5000/images/";
 
+  const handleDelete = async () =>{
+    if(window.confirm("Are you sure, you want to delete your account?")===true)
+    try{
+      await axios.delete(`/users/${user._id}`, {
+        data:{username: user.username},
+      });
+      }
+      catch(err){
+        alert("Something went wrong! Please try again later.")
+      }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: "UPDATE_START" });
     const updatedUser = {
       userId: user._id,
+      username,
       email,
       password,
     };
@@ -45,7 +59,7 @@ export default function Settings() {
       <div className="settingsWrapper">
         <div className="settingsTitle">
           <span className="settingsUpdateTitle">Update Your Account</span>
-          <span className="settingsDeleteTitle">Delete Account</span>
+          <span className="settingsDeleteTitle" onClick={handleDelete}>Delete Account</span>
         </div>
         <form className="settingsForm" onSubmit={handleSubmit}>
           <label>Profile Picture</label>
@@ -64,16 +78,25 @@ export default function Settings() {
               onChange={(e) => setFile(e.target.files[0])}
             />
           </div>
+          <label>Username</label>
+          <input
+            type="text"
+            placeholder={user.username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
           <label>Email</label>
           <input
             type="email"
             placeholder={user.email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <label>Password</label>
           <input
             type="password"
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button className="settingsSubmit" type="submit">
             Update
@@ -82,7 +105,7 @@ export default function Settings() {
             <span
               style={{ color: "green", textAlign: "center", marginTop: "20px" }}
             >
-              Your profile has been updated...
+              Profile has been updated...
             </span>
           )}
         </form>

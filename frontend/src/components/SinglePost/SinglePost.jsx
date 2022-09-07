@@ -27,6 +27,7 @@ export default function SinglePost() {
   },[path]);
 
   const handleDelete = async () => {
+    if(window.confirm("Are you sure, you want to delete your account?")===true)
     try {
       await axios.delete(`/posts/${post._id}`, {
         data: { username: user.username },
@@ -36,7 +37,7 @@ export default function SinglePost() {
       });
       alert("Your post is deleted.")
       window.location.replace("/");
-    } catch (err) {}
+    } catch (err) {alert("Something went wrong! Please try again later.")}
   };
   const handleUpdate = async () => {
     try {
@@ -49,7 +50,7 @@ export default function SinglePost() {
     });
     alert("Your post has been updated successfully.")
       setUpdateMode(false)
-    } catch (err) {}
+    } catch (err) {alert("Something went wrong! Please try again later.")}
   };
 
   return (
