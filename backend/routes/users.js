@@ -17,7 +17,7 @@ router.put("/:id", async (req, res) => {
       const { error } = passwordSchema.validate(req.body);
       if (error)
         return res.status(400).send({ message: error.details[0].message });
-      const salt = await bcrypt.genSalt(10);
+      const salt = await bcrypt.genSalt(Number(process.env.SALT));
       req.body.password = await bcrypt.hash(req.body.password, salt);
     }
     try {
