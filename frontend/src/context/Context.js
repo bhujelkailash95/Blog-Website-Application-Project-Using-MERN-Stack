@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 import Reducer from "./Reducer";
 
 export const INITIAL_STATE = {
-    user: JSON.parse(localStorage.getItem("token")) || null,
+    user: JSON.parse(localStorage.getItem("user")) || null,
     isFetching: false,
     error: false,
   };
@@ -13,7 +13,7 @@ export const INITIAL_STATE = {
     const [state, dispatch] = useReducer(Reducer, INITIAL_STATE);
   
     useEffect(() => {
-      localStorage.setItem("token", JSON.stringify(state.user));
+      localStorage.setItem("user", JSON.stringify(state.user));
     }, [state.user]);
   
     return (

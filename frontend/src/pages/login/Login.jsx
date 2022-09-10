@@ -90,6 +90,9 @@ export default function Login() {
         />
         <span onClick={handleToggle}><Icon icon={icon} size={25}/></span>
         </div>
+        <Link to="/forgot-password" style={{ alignSelf: "flex-start" }}>
+							<p style={{ padding: "0 15px" }}>Forgot Password ?</p>
+						</Link>
         {error && <div className='error-msg'>{error}</div>}
         <button className="loginButton" type="submit" disabled={isFetching}>
           Login

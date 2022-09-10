@@ -10,6 +10,7 @@ export default function Settings() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const { user, dispatch } = useContext(Context);
   const PF = "http://localhost:5000/images/";
@@ -49,7 +50,14 @@ export default function Settings() {
       const res = await axios.put("/users/" + user._id, updatedUser);
       setSuccess(true);
       dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
-    } catch (err) {
+    } catch (error) {
+      if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message);
+			}
       dispatch({ type: "UPDATE_FAILURE" });
     }
   };
@@ -98,6 +106,7 @@ export default function Settings() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          {error && <div className="error_msg">{error}</div>}
           <button className="settingsSubmit" type="submit">
             Update
           </button>

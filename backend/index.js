@@ -8,6 +8,7 @@ const registerAuthRoute = require("./routes/register")
 const userRoute = require("./routes/users")
 const postRoute = require("./routes/posts")
 const categoryRoute = require("./routes/categories")
+const passwordResetRoute = require("./routes/passwordReset")
 const multer = require("multer");
 const path = require("path");
 
@@ -43,6 +44,7 @@ app.use("/api/register",registerAuthRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+app.use("/api/password-reset", passwordResetRoute);
 
 app.listen(port, ()=>{
     console.log("Backend is running")

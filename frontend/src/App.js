@@ -10,6 +10,9 @@ import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { Context} from './context/Context';
 import About from './pages/about/About';
 import Contact from './pages/contact/Contact';
+import EmalVerify from './components/EmailVerify';
+import ForgotPassword from './components/ForgotPassword';
+import PasswordReset from './components/PasswordReset';
 
 function App() {
   const { user } = useContext(Context);
@@ -27,6 +30,9 @@ function App() {
         <Route path='/single' element={<Single />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
+        <Route path='/register/:id/verify/:token' element={<EmalVerify />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   );
