@@ -28,7 +28,7 @@ router.post("/login", async (request, response) => {
             const newToken = new Token({ token: refreshToken });
             await newToken.save();
         
-            response.status(200).json({ accessToken: accessToken, refreshToken: refreshToken, username: user.username, msg:'Logged in successfully.' });
+            response.status(200).json({ accessToken: accessToken, refreshToken: refreshToken, username: user.username, _id:user.id, msg:'Logged in successfully.' });
         
         } else {
             response.status(401).json({ msg: 'Password does not match' })

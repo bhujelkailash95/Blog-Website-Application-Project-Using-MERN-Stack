@@ -8,63 +8,71 @@ const passwordComplexity = require("joi-password-complexity");
 
 
 //UPDATE
-router.put("/:id", async (req, res) => {
-  if (req.body.userId === req.params.id) {
-    if (req.body.password) {
-      const passwordSchema = Joi.object({
-        password: passwordComplexity().required().label("Password"),
-      });
-      const { error } = passwordSchema.validate(req.body);
-      if (error)
-        return res.status(400).send({ message: error.details[0].message });
-      const salt = await bcrypt.genSalt(Number(process.env.SALT));
-      req.body.password = await bcrypt.hash(req.body.password, salt);
+router.put("/:id", async (request, response) => {
+  if (request.body.userId === request.params.id) {
+    // if (request.body.password) {
+    //   const passwordSchema = Joi.object({
+    //     profilePic:Joi.file().label("Profile Picture"),
+    //     username: Joi.string().required().label("Username"),
+    //     email: Joi.string().email().required().label("Email"),
+    //     userId: request.params.id,
+    //     password: passwordComplexity().required().label("Password"),
+    //   });
+    //   const { error } = passwordSchema.validate(request.body);
+    //   if (error)
+    //     return response.status(400).send({ message: error.details[0].message });
+    //   const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    //   request.body.password = await bcrypt.hash(request.body.password, salt);
+    // }
+    if (request.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      request.body.password = await bcrypt.hash(request.body.password, salt);
     }
     try {
       const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
+        request.params.id,
         {
-          $set: req.body,
+          $set: request.body,
         },
         { new: true }
       );
-      res.status(200).json(updatedUser);
-    } catch (err) {
-      res.status(500).json(err);
+      response.status(200).json(updatedUser);
+    } catch (error) {
+      response.status(500).json(error);
     }
   } else {
-    res.status(401).json("You can update only your account!");
+    response.status(401).json("You can update only your account!");
   }
 });
 
 //DELETE
-router.delete("/:id", async (req, res) => {
-  if (req.body.userId === req.params.id) {
+router.delete("/:id", async (request, response) => {
+  if (request.body.userId === request.params.id) {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(request.params.id);
       try {
         await Post.deleteMany({ username: user.username });
-        await User.findByIdAndDelete(req.params.id);
-        res.status(200).json("User has been deleted...");
-      } catch (err) {
-        res.status(500).json(err);
+        await User.findByIdAndDelete(request.params.id);
+        response.status(200).json("User has been deleted...");
+      } catch (error) {
+        response.status(500).json(error);
       }
-    } catch (err) {
-      res.status(404).json("User not found!");
+    } catch (error) {
+      response.status(404).json("User not found!");
     }
   } else {
-    res.status(401).json("You can delete only your account!");
+    response.status(401).json("You can delete only your account!");
   }
 });
 
 //GET USER
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (request, response) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(request.params.id);
     const { password, ...others } = user._doc;
-    res.status(200).json(others);
-  } catch (err) {
-    res.status(500).json(err);
+    response.status(200).json(others);
+  } catch (error) {
+    response.status(500).json(error);
   }
 });
 

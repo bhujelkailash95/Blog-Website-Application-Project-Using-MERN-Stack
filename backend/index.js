@@ -21,7 +21,8 @@ app.use(
 )
 
 app.use(express.json());
-app.use("/images", express.static(path.join(__dirname,"/images")));
+app.use("/images", express.static(path.join(__dirname, "/images")));
+
 mongoose.connect(process.env.MONGO_URL).then(console.log("Connected to MongoDB successfully"))
 .catch((err) => console.log(err));
 
@@ -46,6 +47,6 @@ app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/password-reset", passwordResetRoute);
 
-app.listen(port, ()=>{
-    console.log("Backend is running")
+app.listen(port, ()=> {
+    console.log("Backend is running on port 5000")
 })

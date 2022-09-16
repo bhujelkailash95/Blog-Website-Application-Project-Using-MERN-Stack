@@ -27,7 +27,7 @@ export default function SinglePost() {
   },[path]);
 
   const handleDelete = async () => {
-    if(window.confirm("Are you sure, you want to delete your account?")===true)
+    if(window.confirm("Are you sure, you want to delete your post?")===true)
     try {
       await axios.delete(`/posts/${post._id}`, {
         data: { username: user.username },
@@ -35,7 +35,7 @@ export default function SinglePost() {
         authorization: getAccessToken(),
       }
       });
-      alert("Your post is deleted.")
+      alert("Your post has been deleted.")
       window.location.replace("/");
     } catch (err) {alert("Something went wrong! Please try again later.")}
   };

@@ -29,7 +29,7 @@ router.post("/", async(req,res) =>{
 			}).save();
 		}
 
-		let html = "<h2>Hi! There</h2> <h5> Please reset your password using the link below.</h5>"
+		let html = "<h2>Hi! There</h2> <p> <strong> Please reset your password using the link below.</strong> </p>"
         const url = `${process.env.BASE_URL}password-reset/${user._id}/${token.token}/`;
 		await sendEmail(user.email, "Password Reset", html+url);
 

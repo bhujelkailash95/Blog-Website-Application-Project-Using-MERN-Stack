@@ -19,8 +19,10 @@ export default function Settings() {
     if(window.confirm("Are you sure, you want to delete your account?")===true)
     try{
       await axios.delete(`/users/${user._id}`, {
-        data:{username: user.username},
+        data:{userId: user._id},
       });
+      alert("Your account has been deleted.")
+      window.location.replace("/");
       }
       catch(err){
         alert("Something went wrong! Please try again later.")
@@ -44,7 +46,7 @@ export default function Settings() {
       updatedUser.profilePic = filename;
       try {
         await axios.post("/upload", data);
-      } catch (err) {}
+      } catch (error) {}
     }
     try {
       const res = await axios.put("/users/" + user._id, updatedUser);
