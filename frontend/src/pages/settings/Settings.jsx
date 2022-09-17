@@ -15,19 +15,20 @@ export default function Settings() {
   const { user, dispatch } = useContext(Context);
   const PF = "http://localhost:5000/images/";
 
-  const handleDelete = async () =>{
-    if(window.confirm("Are you sure, you want to delete your account?")===true)
-    try{
-      await axios.delete(`/users/${user._id}`, {
-        data:{userId: user._id},
-      });
-      alert("Your account has been deleted.")
-      window.location.replace("/");
+  const handleDelete = async () => {
+    if (
+      window.confirm("Are you sure, you want to delete your account?") === true
+    )
+      try {
+        await axios.delete(`/users/${user._id}`, {
+          data: { userId: user._id },
+        });
+        alert("Your account has been deleted.");
+        dispatch({ type: "LOGOUT" });
+      } catch (err) {
+        alert("Something went wrong! Please try again later.");
       }
-      catch(err){
-        alert("Something went wrong! Please try again later.")
-      }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,12 +55,12 @@ export default function Settings() {
       dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
     } catch (error) {
       if (
-				error.response &&
-				error.response.status >= 400 &&
-				error.response.status <= 500
-			) {
-				setError(error.response.data.message);
-			}
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message);
+      }
       dispatch({ type: "UPDATE_FAILURE" });
     }
   };
@@ -69,7 +70,9 @@ export default function Settings() {
       <div className="settingsWrapper">
         <div className="settingsTitle">
           <span className="settingsUpdateTitle">Update Your Account</span>
-          <span className="settingsDeleteTitle" onClick={handleDelete}>Delete Account</span>
+          <span className="settingsDeleteTitle" onClick={handleDelete}>
+            Delete Account
+          </span>
         </div>
         <form className="settingsForm" onSubmit={handleSubmit}>
           <label>Profile Picture</label>

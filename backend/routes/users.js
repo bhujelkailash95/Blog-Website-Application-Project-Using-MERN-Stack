@@ -1,29 +1,11 @@
 const router = require("express").Router();
-const User= require("../models/User");
+const User = require("../models/User");
 const Post = require("../models/Post");
 const bcrypt = require("bcrypt");
-const Joi = require("joi");
-const passwordComplexity = require("joi-password-complexity");
-
-
 
 //UPDATE
 router.put("/:id", async (request, response) => {
   if (request.body.userId === request.params.id) {
-    // if (request.body.password) {
-    //   const passwordSchema = Joi.object({
-    //     profilePic:Joi.file().label("Profile Picture"),
-    //     username: Joi.string().required().label("Username"),
-    //     email: Joi.string().email().required().label("Email"),
-    //     userId: request.params.id,
-    //     password: passwordComplexity().required().label("Password"),
-    //   });
-    //   const { error } = passwordSchema.validate(request.body);
-    //   if (error)
-    //     return response.status(400).send({ message: error.details[0].message });
-    //   const salt = await bcrypt.genSalt(Number(process.env.SALT));
-    //   request.body.password = await bcrypt.hash(request.body.password, salt);
-    // }
     if (request.body.password) {
       const salt = await bcrypt.genSalt(10);
       request.body.password = await bcrypt.hash(request.body.password, salt);
